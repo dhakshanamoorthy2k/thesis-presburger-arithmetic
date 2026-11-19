@@ -1,0 +1,6 @@
+from dataclasses import dataclass
+@dataclass(frozen=True)
+class Token:
+    type: str
+    value: str
+    position: int
