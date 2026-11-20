@@ -13,6 +13,8 @@ class Parser:
 
     #look at the current token without moving forward
     def peek(self):
+        if self.position >= len(self.tokens):
+            raise SyntaxError("Unexpected end of input")
         return self.tokens[self.position]
 
     #read the currrent token and move forward to the next token
@@ -112,9 +114,18 @@ class Parser:
                 left = Sub(left, right)
 
         return left
+
+    
     def parse_atomic_formula(self):
 
         left = self.parse_expression()
+        if self.peek().type not in ("EQ", "LT", "LE", "GT", "GE"):
+            current = self.peek()
+            raise SyntaxError(
+                f"Expected a comparison operator, "
+                f"but found {current.type} "
+                f"at position {current.position}"
+            )
 
         operator = self.advance()
 
@@ -168,7 +179,7 @@ class Parser:
 
         elif self.peek().type == "LPAREN":
             self.advance()  # consume '('
-            formula = self.parse_not()
+            formula = self.parse_or()
             self.expect("RPAREN")  # expect ')'
             return formula
 

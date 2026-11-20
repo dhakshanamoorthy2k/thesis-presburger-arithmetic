@@ -8,7 +8,9 @@ from core.lexer import tokenize
 from core.pretty_printer import pretty_print, pretty_print_atomicformula,pretty_print_formula
 
 # formula =  "3 | (x + 2)"
-formula =  "x < 10 y > 5"
+
+# formula =  "((x < 10) AND (y > 5)) OR (3 | x)"
+formula = "EXISTS x: FORALL y: EXISTS z: (((2*x + 3*y) < z) AND (5 | (x + y + z)))"
 tokens = tokenize(formula)
 
 parser = Parser(tokens)
